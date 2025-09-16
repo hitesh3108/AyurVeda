@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ayurvedic Diet Management Design System - All colors MUST be HSL */
+
+@layer base {
+  :root {
+    /* Nature-inspired Ayurvedic color palette */
+    --background: 75 25% 96%;
+    /* UPDATED: Darker, richer foreground color for better theme integration */
+    --foreground: 155 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 155 30% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 155 30% 15%;
+
+    /* Deep forest green primary */
+    --primary: 155 60% 25%;
+    --primary-foreground: 75 25% 96%;
+
+    /* Warm earth secondary */
+    --secondary: 25 35% 85%;
+    --secondary-foreground: 155 30% 15%;
+
+    /* Sage muted tones */
+    --muted: 75 20% 92%;
+    --muted-foreground: 155 15% 45%;
+
+    /* Turmeric gold accent */
+    --accent: 45 85% 65%;
+    --accent-foreground: 155 30% 15%;
+
+    /* Terracotta warm tones */
+    --warm: 15 65% 55%;
+    --warm-foreground: 0 0% 100%;
+
+    /* Healing sage */
+    --sage: 75 30% 75%;
+    --sage-foreground: 155 30% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 75 20% 88%;
+    --input: 75 20% 92%;
+    --ring: 155 60% 25%;
+
+    --radius: 0.75rem;
+
+    /* Ayurvedic gradients */
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(155 60% 25%),
+      hsl(155 50% 35%)
+    );
+    --gradient-sage: linear-gradient(180deg, hsl(75 25% 96%), hsl(75 30% 90%));
+    --gradient-earth: linear-gradient(135deg, hsl(25 35% 85%), hsl(45 30% 80%));
+    --gradient-hero: linear-gradient(135deg, hsl(155 45% 30%), hsl(75 40% 40%));
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px hsl(155 60% 25% / 0.1);
+    --shadow-warm: 0 8px 30px hsl(25 35% 55% / 0.15);
+    --shadow-glow: 0 0 40px hsl(45 85% 65% / 0.2);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  /* UPDATED: Body now includes a subtle background pattern for texture. */
+  body {
+    @apply bg-background text-foreground font-sans;
+    background-color: hsl(var(--background)); /* Fallback */
+    /* NOTE: Replace '/patterns/subtle-leaves.svg' with a real path to your SVG pattern. */
+    background-image: url("/patterns/subtle-leaves.svg"), var(--gradient-sage);
+    background-size: 300px, cover;
+    background-repeat: repeat, no-repeat;
+  }
+}
+
+@layer components {
+  /* Ayurvedic UI Components */
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+  .earth-gradient {
+    background: var(--gradient-earth);
+  }
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  .shadow-warm {
+    box-shadow: var(--shadow-warm);
+  }
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* NEW: Add a "lift" effect to cards and buttons on hover */
+  .lift-on-hover {
+    @apply transition-transform duration-300;
+  }
+  .lift-on-hover:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  /* Mandala decorative element */
+  .mandala-bg {
+    position: relative;
+    overflow: hidden;
+  }
+  .mandala-bg::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      hsl(45 85% 65% / 0.05) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+  }
+}
+
+@layer utilities {
+  /* Animation classes */
+  .animate-gentle-bounce {
+    animation: gentle-bounce 2s ease-in-out infinite;
+  }
+  .animate-leaf-float {
+    animation: leaf-float 3s ease-in-out infinite alternate;
+  }
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out forwards;
+  }
+
+  /* NEW: Staggered fade-in animation utilities for lists */
+  .fade-in-delay-1 {
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: 100ms;
+    opacity: 0;
+  }
+  .fade-in-delay-2 {
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: 200ms;
+    opacity: 0;
+  }
+  .fade-in-delay-3 {
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: 300ms;
+    opacity: 0;
+  }
+  .fade-in-delay-4 {
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: 400ms;
+    opacity: 0;
+  }
+  .fade-in-delay-5 {
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: 500ms;
+    opacity: 0;
+  }
+}
+
+@keyframes gentle-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes leaf-float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,322 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Leaf, Users, Database, MessageSquare, BarChart3, Calendar, Sparkles, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import heroImage from "@/assets/ayurvedic-hero.jpg";
+import dashboardPreview from "@/assets/dashboard-preview.png"; // Make sure this image exists
+
+const testimonials = [
+  {
+    name: "Dr. Priya Sharma",
+    role: "Senior Ayurvedic Practitioner",
+    content: "This platform has transformed how I create diet plans. The AI suggestions align perfectly with traditional Ayurvedic principles while providing modern nutritional insights.",
+    rating: 5,
+  },
+  {
+    name: "Dr. Rajesh Kumar",
+    role: "Wellness Consultant",
+    content: "The comprehensive food database with Rasa classifications saves me hours of research. My patients love the personalized approach to their dietary needs.",
+    rating: 5,
+  },
+  {
+    name: "Dr. Meera Patel",
+    role: "Holistic Health Expert",
+    content: "Patient management has never been easier. The integration of Prakriti assessment with modern tracking tools is exactly what our field needed.",
+    rating: 5,
+  },
+];
+
+const TestimonialCard = ({ testimonial }: { testimonial: typeof testimonials[0] }) => (
+  <Card className="shadow-soft border-0 bg-card/50 backdrop-blur-sm">
+    <CardContent className="p-8">
+      <div className="flex items-center mb-4">
+        {[...Array(testimonial.rating)].map((_, i) => (
+          <Star key={i} className="h-5 w-5 text-accent fill-current" />
+        ))}
+      </div>
+      <p className="text-muted-foreground mb-6 leading-relaxed italic">
+        "{testimonial.content}"
+      </p>
+      <div className="border-t border-border pt-4">
+        <p className="font-semibold text-foreground">{testimonial.name}</p>
+        <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const Home = () => {
+  const { isAuthenticated, getUserType, signOut } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out successfully",
+        description: "You have been logged out.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error signing out",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const renderAuthButtons = () => {
+    if (isAuthenticated) {
+      const userType = getUserType();
+      return (
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Button 
+            size="lg" 
+            onClick={() => navigate(userType === 'dietitian' ? '/dietitian/dashboard' : '/patient/dashboard')}
+            className="px-8 py-6 text-lg font-semibold"
+          >
+            Go to Dashboard
+          </Button>
+          <Button 
+            variant="outline" 
+            size="lg" 
+            onClick={handleSignOut}
+            className="px-8 py-6 text-lg font-semibold bg-white/20 border-white text-white hover:bg-white hover:text-primary"
+          >
+            Sign Out
+          </Button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <Button 
+            size="lg" 
+            onClick={() => navigate('/patient-auth')}
+            className="px-8 py-6 text-lg font-semibold flex-1 sm:flex-none"
+          >
+            I'm a Patient
+          </Button>
+          <Button 
+            variant="outline" 
+            size="lg"
+            onClick={() => navigate('/dietitian-auth')}
+            className="px-8 py-6 text-lg font-semibold bg-white/20 border-white text-white hover:bg-white hover:text-primary flex-1 sm:flex-none"
+          >
+            I'm a Dietitian
+          </Button>
+        </div>
+      </div>
+    );
+  };
+  
+  return (
+    <div className="min-h-screen">
+      <section className="relative hero-gradient mandala-bg min-h-screen flex items-center justify-center px-4">
+        <div className="absolute inset-0 overflow-hidden">
+          <img 
+            src={heroImage} 
+            alt="Ayurvedic herbs and wellness" 
+            className="absolute inset-0 w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+        
+        <div className="container mx-auto text-center relative z-10">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <Leaf className="h-10 w-10 text-white" />
+            <p className="text-4xl font-bold text-white">AyurVeda</p>
+          </div>
+          <div className="animate-fade-up">
+            <div className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/10 backdrop-blur-sm border border-primary-foreground/20">
+              <Sparkles className="h-4 w-4 text-accent" />
+              <span className="text-primary-foreground/90 text-sm font-medium">AI-Powered Ayurvedic Solutions</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground mb-6 leading-tight">
+              Holistic <span style={{ color: "#f2cc5a" }}>Ayurvedic</span> Diet Management
+            </h1>
+            <p className="text-xl md:text-2xl text-primary-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Blend tradition with science. Smarter diet plans, better patient outcomes.
+              Transform your practice with 8,000+ foods and ancient wisdom.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              {renderAuthButtons()}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              Ancient Wisdom Meets <span className="text-primary">Modern Technology</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Comprehensive tools for Ayurvedic practitioners to manage patients, create personalized diet plans, and track progress with AI assistance.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card className="shadow-soft hover:shadow-warm transition-smooth border-0 bg-card/50 backdrop-blur-sm">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-6 bg-accent/10 rounded-2xl flex items-center justify-center">
+                  <Sparkles className="h-8 w-8 text-accent" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-foreground">AI-Assisted Diet Planning</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Generate personalized Ayurvedic diet plans using AI that considers Prakriti, Rasa, and modern nutrition science.
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="shadow-soft hover:shadow-warm transition-smooth border-0 bg-card/50 backdrop-blur-sm">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center">
+                  <Database className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-foreground">8,000+ Food Database</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Comprehensive database with Ayurvedic properties: Hot/Cold, Heavy/Light, Rasa classifications, plus complete nutrition data.
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="shadow-soft hover:shadow-warm transition-smooth border-0 bg-card/50 backdrop-blur-sm">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-6 bg-warm/10 rounded-2xl flex items-center justify-center">
+                  <Users className="h-8 w-8 text-warm" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-foreground">Patient Management</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Track patient progress, Prakriti assessments, appointment scheduling, and comprehensive health analytics.
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="shadow-soft hover:shadow-warm transition-smooth border-0 bg-card/50 backdrop-blur-sm">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-6 bg-sage/10 rounded-2xl flex items-center justify-center">
+                  <MessageSquare className="h-8 w-8 text-sage-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-foreground">Premium Chat & Support</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Real-time chat with dietitians, personalized consultations, and priority support for premium patients.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 earth-gradient">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              Beautiful, Intuitive Dashboards
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Designed for both practitioners and patients, our interfaces make complex Ayurvedic principles accessible and actionable.
+            </p>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h3 className="text-3xl font-bold text-foreground mb-6">For Dietitians</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <BarChart3 className="h-5 w-5 text-primary" />
+                  </div>
+                  <span className="text-lg text-foreground">Comprehensive analytics and insights</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                    <Calendar className="h-5 w-5 text-accent" />
+                  </div>
+                  <span className="text-lg text-foreground">Integrated appointment scheduling</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-warm/10 rounded-lg flex items-center justify-center">
+                    <Database className="h-5 w-5 text-warm" />
+                  </div>
+                  <span className="text-lg text-foreground">Powerful food database management</span>
+                </div>
+              </div>
+            </div>
+            <Card className="shadow-warm border-0 bg-card p-4">
+              <img 
+                src={dashboardPreview} 
+                alt="Dietitian Dashboard Preview"
+                className="rounded-lg shadow-lg w-full"
+              />
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              Trusted by Ayurvedic Practitioners
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard key={index} testimonial={testimonial} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="py-12 px-4 bg-foreground/5">
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Leaf className="h-8 w-8 text-primary" />
+                <span className="text-2xl font-bold text-primary">AyurVeda</span>
+              </div>
+              <p className="text-muted-foreground">
+                Bridging ancient Ayurvedic wisdom with modern technology for better health outcomes.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-foreground mb-4">Product</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><a href="#" className="hover:text-primary transition-smooth">Features</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">Pricing</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">Integrations</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">API</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-foreground mb-4">Company</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><a href="#" className="hover:text-primary transition-smooth">About</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">Contact</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">Careers</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">Blog</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-foreground mb-4">Legal</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><a href="#" className="hover:text-primary transition-smooth">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">Cookie Policy</a></li>
+                <li><a href="#" className="hover:text-primary transition-smooth">GDPR</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
+            <p>&copy; 2024 AyurVeda. All rights reserved. Made with 🌿 for holistic wellness.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Home;
