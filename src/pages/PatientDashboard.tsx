@@ -5,7 +5,7 @@ import {
   BarChart3,
   Utensils,
   Database,
-  TrendingUp,
+  Wind, // <-- UPDATED: Changed icon for new tab
   MessageCircle,
   User,
   Settings,
@@ -17,11 +17,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 
-// Import the new patient-specific view components
+// Import the new and existing view components
 import PatientOverview from "@/components/dashboard/patient/PatientOverview";
 import MealPlanView from "@/components/dashboard/patient/MealPlanView";
 import PatientFoodDatabase from "@/components/dashboard/patient/PatientFoodDatabase";
-import ProgressTracker from "@/components/dashboard/patient/ProgressTracker";
+import DoshaAnalysisView from "@/components/dashboard/patient/DoshaAnalysisView"; // <-- UPDATED
 import PatientChat from "@/components/dashboard/patient/PatientChat";
 import PatientProfile from "@/components/dashboard/patient/PatientProfile";
 import PatientSettings from "@/components/dashboard/patient/PatientSettings";
@@ -38,11 +38,12 @@ const PatientDashboard = () => {
     navigate('/');
   };
 
+  // --- UPDATED: Sidebar items ---
   const sidebarItems = [
     { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "meal-plan", label: "My Meal Plan", icon: Utensils },
     { id: "food-database", label: "Food Database", icon: Database },
-    { id: "progress", label: "Progress", icon: TrendingUp },
+    { id: "dosha-analysis", label: "Dosha Analysis", icon: Wind }, // <-- REPLACED "Progress"
     { id: "chat", label: "Chat with Dietitian", icon: MessageCircle, premium: true },
     { id: "profile", label: "My Profile", icon: User },
     { id: "settings", label: "Settings", icon: Settings }
@@ -56,8 +57,8 @@ const PatientDashboard = () => {
         return <MealPlanView />;
       case "food-database":
         return <PatientFoodDatabase />;
-      case "progress":
-        return <ProgressTracker />;
+      case "dosha-analysis": // <-- UPDATED
+        return <DoshaAnalysisView />;
       case "chat":
         return <PatientChat />;
       case "profile":
@@ -72,11 +73,12 @@ const PatientDashboard = () => {
   return (
     <div className="min-h-screen flex bg-background">
       <aside className="w-64 bg-card border-r border-border shadow-soft flex flex-col">
+        {/* Sidebar content (user info, nav buttons, sign out) remains the same */}
         <div className="p-6">
           <div className="flex items-center gap-2 mb-8">
             <Leaf className="h-8 w-8 text-primary" />
             <div>
-              <span className="text-xl font-bold text-primary">AyurVeda</span>
+              <span className="text-xl font-bold text-primary">AyurVeda AI</span>
               <p className="text-xs text-muted-foreground">Patient Portal</p>
             </div>
           </div>
@@ -114,13 +116,8 @@ const PatientDashboard = () => {
           </nav>
         </div>
         <div className="mt-auto p-6 border-t border-border">
-          <Button
-            variant="ghost"
-            onClick={handleSignOut}
-            className="w-full flex items-center gap-3 px-4 py-3 justify-start text-muted-foreground hover:text-foreground"
-          >
-            <LogOut className="h-5 w-5" />
-            Sign Out
+          <Button variant="ghost" onClick={handleSignOut} className="w-full flex items-center gap-3 px-4 py-3 justify-start text-muted-foreground hover:text-foreground">
+            <LogOut className="h-5 w-5" /> Sign Out
           </Button>
         </div>
       </aside>
